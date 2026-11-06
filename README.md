@@ -4,7 +4,9 @@
 
 Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original providers and provides a public, interactive **Captain AEGIS 12-facet Tesseract explorer**.
 
-## Explore
+## Launch status
+
+[Consolidated release tracker](docs/MASTER_RELEASE_TRACKER.md) — verified milestones for the school, Captain checkpoint, public runtime, HF chat demo and professional portfolio.\n\n## Explore
 
 - [Academy course directory](site/index.html) — searchable pilot catalogue.
 - [Captain AEGIS architectural explorer](site/captain/index.html) — twelve interactive operational and learning facets.
