@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NeVeRhOOd Academy Resource",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "provider",
+    "category",
+    "url",
+    "review_status",
+    "credential_status",
+    "credits_status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "review_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "reviewing",
+        "verified",
+        "rejected"
+      ]
+    },
+    "credential_status": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "none",
+        "provider-certificate",
+        "academy-completion"
+      ]
+    },
+    "credits_status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "none",
+        "verified-provider-awarded"
+      ]
+    },
+    "verified_credits": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "credit_unit": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "CEU",
+        "ECTS",
+        "semester-hour",
+        "quarter-hour",
+        null
+      ]
+    },
+    "verified_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "verified_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "official_evidence_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    }
+  },
+  "additionalProperties": false
+}
