@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Captain AEGIS — NeVeRhOOd Fabric</title><desc id="desc">Glowing cyan operational cube, violet learning cube and amber bridges representing the AEGIS system design.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#050919"/><stop offset="1" stop-color="#101a35"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect width="1200" height="630" rx="30" fill="url(#bg)"/>
+<text x="600" y="75" font-family="system-ui,Segoe UI,Arial,sans-serif" font-size="45" font-weight="800" text-anchor="middle" fill="#f5faff">Captain <tspan fill="#60dbfb">AEGIS</tspan> <tspan fill="#67738a">×</tspan> NeVeRhOOd</text>
+<text x="600" y="109" font-family="system-ui,sans-serif" font-size="15" letter-spacing="4" text-anchor="middle" fill="#a9c7dd">OPERATIONAL + LEARNING FABRIC</text>
+<g stroke="#45dfff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+<path d="M225 215H825V492H225Z M345 150H945V427H345Z M225 215L345 150 M825 215L945 150 M825 492L945 427 M225 492L345 427"/></g>
+<g stroke="#ffc76b" stroke-width="3" stroke-dasharray="10 11" fill="none" opacity=".95">
+<path d="M225 215L485 315 M825 215L716 315 M825 492L716 433 M225 492L485 433 M345 150L545 270 M945 150L776 270 M945 427L776 397 M345 427L545 397"/></g>
+<g stroke="#b98aff" stroke-width="4" fill="#452c7d" fill-opacity=".16" stroke-linejoin="round" filter="url(#glow)">
+<path d="M485 315H716V433H485Z M545 270H776V397H545Z M485 315L545 270 M716 315L776 270 M716 433L776 397 M485 433L545 397"/></g>
+<g font-family="system-ui,Segoe UI,Arial,sans-serif" fill="#f4f6ff" text-anchor="middle" font-weight="650"><text x="585" y="186" font-size="19">OPERATIONAL FABRIC</text><text x="610" y="351" font-size="19">LEARNING</text><text x="610" y="375" font-size="19">FABRIC</text><text x="600" y="558" font-size="27" letter-spacing="4">DNO · FORGE · NEXUS</text></g>
+<text x="600" y="596" font-family="system-ui,sans-serif" font-size="14" text-anchor="middle" fill="#8eb8c9">Explore the architecture · Learn the system · Build with evidence</text>
+</svg>
