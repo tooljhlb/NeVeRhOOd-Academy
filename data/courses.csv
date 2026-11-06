@@ -1,0 +1,5 @@
+id,title,provider,category,url,credential_status,link_status
+cs50,CS50 Introduction to Computer Science,Harvard University,Programming,https://cs50.harvard.edu/x/,check-provider,unverified
+cs50ai,CS50 Introduction to Artificial Intelligence with Python,Harvard University,Artificial Intelligence,https://cs50.harvard.edu/ai/,check-provider,unverified
+mit006,Introduction to Algorithms,MIT OpenCourseWare,Computer Science,https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/,not-confirmed,unverified
+cs224n,CS224N Natural Language Processing with Deep Learning,Stanford University,Artificial Intelligence,https://web.stanford.edu/class/cs224n/,not-confirmed,unverified
