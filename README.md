@@ -4,6 +4,10 @@
 
 Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original providers and provides a public, interactive **Captain AEGIS 12-facet Tesseract explorer**.
 
+## Captain AEGIS on Hugging Face
+
+- [Public Captain AEGIS model repository](https://huggingface.co/Henrybarton/captainaegis-flagship) — five root SafeTensors shards are present; hosted live inference has **not** yet been verified.
+
 ## NeVeRhOOd public channels
 
 - [NeVeRhOOd Academy — YouTube](https://www.youtube.com/@NeVeRhOOd_Academy)
