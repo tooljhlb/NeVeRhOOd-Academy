@@ -4,6 +4,12 @@
 
 Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original providers and provides a public, interactive **Captain AEGIS 12-facet Tesseract explorer**.
 
+## NeVeRhOOd public channels
+
+- [NeVeRhOOd Academy — YouTube](https://www.youtube.com/@NeVeRhOOd_Academy)
+- [Public engineering portfolio](docs/NEVERHOOD_PUBLIC_PORTFOLIO.md)
+- [Academy Go API](services/academy-api/README.md) (source; not hosted)
+
 ## Launch status
 
 [Consolidated release tracker](docs/MASTER_RELEASE_TRACKER.md) — verified milestones for the school, Captain checkpoint, public runtime, HF chat demo and professional portfolio.\n\n## Start learning
