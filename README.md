@@ -6,7 +6,13 @@ Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original p
 
 ## Launch status
 
-[Consolidated release tracker](docs/MASTER_RELEASE_TRACKER.md) — verified milestones for the school, Captain checkpoint, public runtime, HF chat demo and professional portfolio.\n\n## Explore
+[Consolidated release tracker](docs/MASTER_RELEASE_TRACKER.md) — verified milestones for the school, Captain checkpoint, public runtime, HF chat demo and professional portfolio.\n\n## Start learning
+
+- [AI Agents 101 — Tools, Permissions & Evidence](site/learn/ai-agents-101/index.html): original five-section lesson with interactive five-question practice quiz; independent and non-accredited.
+- [Academic credits and certificates policy](docs/ACADEMIC_CREDIT_AND_CERTIFICATES.md)
+- [Curriculum roadmap](docs/CURRICULUM_ROADMAP.md)
+
+## Explore
 
 - [Academy course directory](site/index.html) — searchable pilot catalogue.
 - [Captain AEGIS architectural explorer](site/captain/index.html) — twelve interactive operational and learning facets.
