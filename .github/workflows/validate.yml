@@ -26,6 +26,12 @@ jobs:
         run: python scripts/validate_catalog.py --output validation-report.json
       - name: Academy unit tests
         run: python -m unittest discover -s tests -v
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+      - name: Test Academy Go API
+        working-directory: services/academy-api
+        run: go test ./...
       - name: Build website
         run: python scripts/build.py
       - name: Check generated pages
