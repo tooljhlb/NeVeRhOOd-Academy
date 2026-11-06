@@ -52,3 +52,11 @@
 - [ ] Consolidate résumé, LinkedIn, GitHub profile, Hugging Face model catalog and business-card QR
 
 **Public releases must reflect measured functioning systems, not design targets.**
+
+## Verified 2026-11-06 progress
+
+- [x] Parsed 1,000 numbered owner research records into PRIVATE review CSV; counted 309 unique normalized URL destinations and 691 repeated destination references. Many links are broad institution pages; no provider credit totals validated.
+- [x] Added original Academy AI Agents 101 lesson and five-question self-assessment; public repository source committed.
+- [x] Confirmed FIRST Captain model weight shard uploaded to PRIVATE Hugging Face staging model repo (commit 68b16beed023a745cd7c41b2d03f43b4015f24fe). The remaining four weight shards and live inference are not validated.
+- [x] Tested Academy local builder and new lesson structure against current GitHub source.
+- [ ] Verify public Pages deployment and peer-reviewed course-specific links.
