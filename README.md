@@ -25,6 +25,13 @@ Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original p
 - [Course source data](data/courses.csv) and [catalog builder](scripts/build.py).
 - [Publication boundaries](docs/RELEASE.md).
 
+## Public portfolio and engineering boundaries
+
+- [NeVeRhOOd portfolio page](site/about/index.html) — Academy, Captain AEGIS and DATA Studio
+- [Program boundaries](docs/PROGRAM_BOUNDARIES.md) — Muse's separate AEGIS model and private Colab work are strictly excluded
+- [Standalone Go Academy API](services/academy-api/README.md) — source available, hosting and Go tests pending
+- [Open release issues](https://github.com/tooljhlb/NeVeRhOOd-Academy/issues) — deployment, academic review, Captain integration and Manus
+
 ## Development
 
 ```sh
