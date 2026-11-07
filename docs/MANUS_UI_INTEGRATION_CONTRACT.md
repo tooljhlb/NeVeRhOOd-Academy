@@ -25,7 +25,7 @@ This is the architecture-neutral integration specification for a public UI built
 ```http
 GET /api/v1/courses?query=&category=&verified_only=true
 GET /api/v1/courses/{id}
-GET /api/v1/learning-paths
+GET /api/v1/learning-paths   # IMPLEMENTED in the read-only Go service (not hosted)
 GET /api/v1/health
 GET /api/v1/models
 POST /api/v1/chat/completions
@@ -93,3 +93,9 @@ As of last verified session: GitHub Pages workflow failing; Hugging Face only sh
 ## Proprietary boundary
 
 Do not expose owner's local Windows filesystem or private Google Drive mailboxes, custom Colab worker fabric, private source/repos, internal Cloudflare workers, model generation secrets, unpublished media packs or unreviewed personal records.
+
+## Foundations track — implemented November 6, 2026
+
+The public static source now includes [AI Engineering Foundations](../site/track/foundations/index.html), with three original lessons and fifteen practice questions. The independently testable Go API provides `GET /api/v1/learning-paths` returning an `ai-engineering-foundations` record with three lesson IDs and URLs, `accredited: false`, and `certificate_status: not_issued`. It does not collect learner identities or award credentials. Use these honest states in Manus.
+
+The refreshed Manus static website ZIP is stored privately in the owner workspace under `10_RELEASES/NEVERHOOD_ACADEMY_MANUS_FOUNDATIONS_20261106.zip`; it is not a live deployment. GitHub Actions is restricted at the account level; the site builds locally.
