@@ -9,10 +9,10 @@ NeVeRhOOd brings together original technical learning resources, AI research, mo
 ### NeVeRhOOd Academy — open learning and practical engineering
 [Public GitHub source](https://github.com/tooljhlb/NeVeRhOOd-Academy) · [YouTube channel](https://www.youtube.com/@NeVeRhOOd_Academy)
 
-The Academy combines a searchable directory of technical resources, original lessons and self-assessments, and planned AI-assisted tutoring. The public repository already includes an original AI Agents 101 lesson, a course catalog builder, a validation suite and a standalone Go read-only API. The actual public production site and Captain tutor are not yet independently verified deployed. Academy-issued future completion records will be clearly non-accredited.
+The Academy combines a searchable directory of technical resources, three original AI Engineering Foundations lessons with 15 self-assessment questions, and planned AI-assisted tutoring. The public repository includes a course catalog builder, a validation suite and a standalone Go read-only API. The actual public production site and Captain tutor are not yet independently verified deployed. Academy-issued future completion records will be clearly non-accredited.
 
 ### Captain AEGIS — model, runtime and safe agent tools
-The [Captain AEGIS research checkpoint](https://huggingface.co/Henrybarton/captainaegis-flagship) is now **publicly downloadable**, with approximately **4.206 billion physical parameters** and five root SafeTensors shards present. It is separate from Muse's larger AEGIS program. The original storage bucket and serving runtime remain distinct. Real GPU loading, generated outputs, inference quality, and a hosted Academy tutor are still pending verification. The separate 78.75 GB figure is a development **target**, not the saved checkpoint size.
+The [Captain AEGIS research checkpoint](https://huggingface.co/Henrybarton/captainaegis-flagship) is now **publicly downloadable**, with approximately **4.206 billion physical parameters** and five root SafeTensors shards present. It is separate from Muse's larger AEGIS program. The original storage bucket and serving runtime remain distinct. Real Tesla T4 loading, text generation, streaming and the native authenticated in-memory HTTP API have now been verified with [published GPU evidence](https://huggingface.co/Henrybarton/captainaegis-flagship/blob/main/evidence/captain_t4_gpu_smoke_20261106.json) and [published API evidence](https://huggingface.co/Henrybarton/captainaegis-flagship/blob/main/evidence/captain_t4_native_api_20261106.json). Independent inference quality, full tool-use benchmarks, production uptime, and a hosted Academy tutor are still pending verification. The separate 78.75 GB figure is a development **target**, not the saved checkpoint size.
 
 ### AEGIS DATA Studio — AI development and evaluation
 A planned independent developer product based on existing native Rust/C++ data processing, evaluation gates, durable jobs, evidence receipts and code tooling. The public product will exclude proprietary Google compute workers and personal infrastructure integrations.
@@ -36,7 +36,7 @@ A planned independent developer product based on existing native Rust/C++ data p
 - [GitHub account](https://github.com/tooljhlb)
 - [Hugging Face account](https://huggingface.co/Henrybarton)
 
-**Pending:** validated public Captain model card/download, hosted chat service, public DATA Studio release, verified Academy hosting, and final LinkedIn profile/QR business-card destination. Do not imply those are already live.
+**Pending:** publicly hosted Captain chat service, independent quality/security tests, public DATA Studio release, verified Academy hosting, and final LinkedIn profile/QR business-card destination. Public checkpoint downloads, the model card, and bounded GPU/API receipts are already available. Do not imply those are already live.
 
 ## Privacy
 This public narrative deliberately omits the owner's private Colab cluster, worker control plane, accounts, credentials, internal mailboxes, storage paths and unreleased model-generating source.
