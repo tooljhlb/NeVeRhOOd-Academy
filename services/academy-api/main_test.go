@@ -55,3 +55,19 @@ func TestVerifiedOnlyExcludesUnreviewed(t *testing.T) {
 	if err:=json.Unmarshal(w.Body.Bytes(),&r);err!=nil{t.Fatal(err)}
 	if r.Total!=0{t.Fatalf("pilot entries are not link-verified; got %d",r.Total)}
 }
+
+func TestLearningPathsAreRealAndNonAccredited(t *testing.T) {
+    w:=httptest.NewRecorder()
+    newTestServer(t).handler().ServeHTTP(w,httptest.NewRequest("GET","/api/v1/learning-paths",nil))
+    if w.Code!=200{t.Fatalf("status %d",w.Code)}
+    var v struct{ Items []struct{
+        ID string `json:"id"`
+        Accredited bool `json:"accredited"`
+        Lessons []struct{ID string `json:"id"`} `json:"lessons"`
+        CertificateStatus string `json:"certificate_status"`
+    } `json:"items"` }
+    if err:=json.Unmarshal(w.Body.Bytes(),&v);err!=nil{t.Fatal(err)}
+    if len(v.Items)!=1 {t.Fatalf("got %d tracks",len(v.Items))}
+    if v.Items[0].ID!="ai-engineering-foundations" || v.Items[0].Accredited {t.Fatalf("invalid track metadata %+v",v.Items[0])}
+    if len(v.Items[0].Lessons)!=3 || v.Items[0].CertificateStatus!="not_issued" {t.Fatalf("unexpected lessons/certificate %+v",v.Items[0])}
+}
