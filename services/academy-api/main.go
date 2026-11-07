@@ -33,6 +33,7 @@ type Server struct {
 	Courses []Course
 	Origin  string
 	CaptainProbeURL string
+	Tutor TutorGateway
 }
 
 func loadCSV(path string) ([]Course, error) {
@@ -84,6 +85,7 @@ func jsonReply(w http.ResponseWriter, status int, data any) {
 
 func (s *Server) handler() http.Handler {
 	mux := http.NewServeMux()
+	mux.Handle("/api/v1/tutor/chat", s.Tutor)
 	mux.HandleFunc("/api/v1/health", func(w http.ResponseWriter, r *http.Request) {
 		jsonReply(w, http.StatusOK, map[string]any{
 			"status": "ok", "service": "neverhood-academy-api",
@@ -153,12 +155,12 @@ func (s *Server) handler() http.Handler {
 		}
 		if r.Method == http.MethodOptions {
 			if s.Origin == "" || r.Header.Get("Origin") != s.Origin { w.WriteHeader(403); return }
-			w.Header().Set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS, POST")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
-		if r.Method != http.MethodGet && r.Method != http.MethodHead {
+		if r.Method != http.MethodGet && r.Method != http.MethodHead && !(r.Method == http.MethodPost && r.URL.Path == "/api/v1/tutor/chat") {
 			w.Header().Set("Allow", "GET, HEAD, OPTIONS")
 			jsonReply(w, http.StatusMethodNotAllowed, map[string]string{"error": "read-only API"})
 			return
@@ -174,7 +176,7 @@ func main() {
 	courses, err := loadCSV(*catalog)
 	if err != nil { log.Fatal(err) }
 	origin := strings.TrimSpace(os.Getenv("ACADEMY_ALLOWED_ORIGIN"))
-	s := &Server{Courses: courses, Origin: origin, CaptainProbeURL: strings.TrimSpace(os.Getenv("CAPTAIN_READY_URL"))}
+	s := &Server{Courses: courses, Origin: origin, CaptainProbeURL: strings.TrimSpace(os.Getenv("CAPTAIN_READY_URL")), Tutor: TutorGateway{UpstreamURL: strings.TrimSpace(os.Getenv("CAPTAIN_UPSTREAM_URL")), UpstreamKey: os.Getenv("CAPTAIN_SERVER_API_KEY"), AcademyKey: os.Getenv("ACADEMY_TUTOR_ACCESS_KEY")}}
 	server := &http.Server{
 		Addr: *addr, Handler: s.handler(), ReadHeaderTimeout: 5*time.Second,
 		ReadTimeout: 15*time.Second, WriteTimeout: 30*time.Second, IdleTimeout: 60*time.Second,
