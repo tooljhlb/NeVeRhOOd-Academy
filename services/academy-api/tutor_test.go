@@ -38,7 +38,7 @@ func TestTutorRejectsUntrustedOrigin(t *testing.T) {
 func TestTutorToAuthenticatedCaptain(t *testing.T) {
  mock:=httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter,r *http.Request){
   if r.Header.Get("Authorization")!="Bearer origin" {t.Errorf("wrong origin credentials")}
-  var payload struct{Messages []struct{Content string};MaxTokens int}
+  var payload struct{Messages []struct{Content string `json:"content"`} `json:"messages"`;MaxTokens int `json:"max_tokens"`}
   if err:=json.NewDecoder(r.Body).Decode(&payload);err!=nil {t.Error(err)}
   if len(payload.Messages)!=2 || payload.Messages[1].Content!="Explain APIs" || payload.MaxTokens!=64 {t.Errorf("payload %+v",payload)}
   w.Header().Set("Content-Type","application/json")
