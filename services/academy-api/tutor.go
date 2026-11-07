@@ -87,7 +87,7 @@ func (g TutorGateway) ServeHTTP(w http.ResponseWriter,r *http.Request) {
   model:=g.Model
   if model=="" {model="aegis-flagship"}
   payload:=map[string]any{
-    "model":model,"max_tokens":128,"temperature":0.2,"stream":false,
+    "model":model,"max_tokens":64,"temperature":0.2,"stream":false,
     "messages":[]map[string]string{
       {"role":"system","content":"You are a study tutor. Give grounded explanations, distinguish uncertainty, and never claim accredited credentials or course completion."},
       {"role":"user","content":question},
