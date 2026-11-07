@@ -3,7 +3,7 @@ package main
 import (
     "context"
     "encoding/json"
-    "errors"
+    "io"
     "net/http"
     "net/url"
     "strings"
@@ -47,7 +47,7 @@ func probeCaptain(ctx context.Context, target string) CaptainReadiness {
         status.State="not_ready";status.Note="Captain backend did not pass its readiness gate.";return status
     }
     var body struct { Ready bool `json:"ready"` }
-    if err=json.NewDecoder(http.MaxBytesReader(nil,resp.Body,4096)).Decode(&body);err!=nil&& !errors.Is(err,context.Canceled){
+    if err=json.NewDecoder(io.LimitReader(resp.Body,4096)).Decode(&body);err!=nil{
         status.State="invalid_response";status.Note="Captain readiness response could not be validated.";return status
     }
     if !body.Ready {
