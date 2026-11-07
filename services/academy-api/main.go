@@ -32,6 +32,7 @@ type Course struct {
 type Server struct {
 	Courses []Course
 	Origin  string
+	CaptainProbeURL string
 }
 
 func loadCSV(path string) ([]Course, error) {
@@ -89,7 +90,10 @@ func (s *Server) handler() http.Handler {
 			"catalog_records": len(s.Courses), "api_version": "v1",
 		})
 	})
-	mux.HandleFunc("/api/v1/models", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/v1/captain/status", func(w http.ResponseWriter, r *http.Request) {
+        jsonReply(w, http.StatusOK, probeCaptain(r.Context(), s.CaptainProbeURL))
+    })
+    mux.HandleFunc("/api/v1/models", func(w http.ResponseWriter, r *http.Request) {
 		jsonReply(w, http.StatusOK, map[string]any{
 			"models": []any{map[string]any{"id": "captain-aegis", "status": "not_deployed",
 				"chat_endpoint": nil, "note": "The real Captain backend requires GPU and full checkpoint validation."}},
@@ -170,7 +174,7 @@ func main() {
 	courses, err := loadCSV(*catalog)
 	if err != nil { log.Fatal(err) }
 	origin := strings.TrimSpace(os.Getenv("ACADEMY_ALLOWED_ORIGIN"))
-	s := &Server{Courses: courses, Origin: origin}
+	s := &Server{Courses: courses, Origin: origin, CaptainProbeURL: strings.TrimSpace(os.Getenv("CAPTAIN_READY_URL"))}
 	server := &http.Server{
 		Addr: *addr, Handler: s.handler(), ReadHeaderTimeout: 5*time.Second,
 		ReadTimeout: 15*time.Second, WriteTimeout: 30*time.Second, IdleTimeout: 60*time.Second,
