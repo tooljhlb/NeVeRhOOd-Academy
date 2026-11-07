@@ -23,6 +23,7 @@ For remote deployment bind to the host/port provided by an approved platform, e.
 | GET | /api/v1/health | Public service health and count |
 | GET | /api/v1/courses | Filter by `query` or `q`, `category`, `verified_only`; `limit` 1..100 and `offset` |
 | GET | /api/v1/courses/{id} | Single course record |
+| GET | /api/v1/learning-paths | Original three-lesson Foundations track, with certificate status explicitly `not_issued` |
 | GET | /api/v1/models | Captain remains `not_deployed` until real inference is verified |
 
 Use `ACADEMY_ALLOWED_ORIGIN=https://your-manus-domain` to allow the frontend's browser origin. The default is **no cross-origin access**. Expose no private admin or job endpoints until authentication and authorization exist.
