@@ -6,7 +6,7 @@ Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original p
 
 ## Captain AEGIS on Hugging Face
 
-- [Public Captain AEGIS model repository](https://huggingface.co/Henrybarton/captainaegis-flagship) — five root SafeTensors shards are present; hosted live inference has **not** yet been verified.
+- [Public Captain AEGIS model repository](https://huggingface.co/Henrybarton/captainaegis-flagship) — five SafeTensors shards, [real Tesla T4 inference proof](https://huggingface.co/Henrybarton/captainaegis-flagship/blob/main/evidence/captain_t4_gpu_smoke_20261106.json), and [native authenticated API/SSE proof](https://huggingface.co/Henrybarton/captainaegis-flagship/blob/main/evidence/captain_t4_native_api_20261106.json). A publicly hosted chat service is **not** yet deployed.
 
 ## NeVeRhOOd public channels
 
