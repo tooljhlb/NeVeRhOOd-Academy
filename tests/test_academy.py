@@ -51,6 +51,22 @@ class AcademyTests(unittest.TestCase):
         self.assertEqual(src.count("<fieldset>"), 5)
         self.assertIn("non-accredited", src.lower())
 
+    def test_foundations_track_contains_all_three_lessons(self):
+        page = (ROOT / "site" / "track" / "foundations" / "index.html").read_text(encoding="utf-8")
+        for slug in ("ai-agents-101", "protocols-101", "evaluation-101"):
+            self.assertIn(f"learn/{slug}/index.html", page)
+
+    def test_two_new_lessons_include_five_practice_questions_each(self):
+        for slug in ("protocols-101", "evaluation-101"):
+            page = (ROOT / "site" / "learn" / slug / "index.html").read_text(encoding="utf-8")
+            self.assertEqual(page.count("<fieldset>"), 5, slug)
+            self.assertIn("not an accredited credential", page.lower(), slug)
+            self.assertIn('type="submit"', page, slug)
+
+    def test_homepage_template_features_foundations_track(self):
+        page = (ROOT / "site" / "template.html").read_text(encoding="utf-8")
+        self.assertIn('href="track/foundations/index.html"', page)
+
     def test_academy_template_links_to_own_lesson(self):
         src = (ROOT / "site" / "template.html").read_text(encoding="utf-8")
         self.assertIn("learn/ai-agents-101/index.html", src)
