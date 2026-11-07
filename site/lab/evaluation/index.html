@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071426">
+<title>Evaluation Lab · NeVeRhOOd Academy</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,Segoe UI,sans-serif}*{box-sizing:border-box}
+body{margin:0;background:#081426;color:#eef8ff;line-height:1.55}
+main{max-width:1060px;margin:auto;padding:24px 18px 80px}
+a{color:#80e0ff}h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;margin:12px 0}
+h2{font-size:1.3rem}.eyebrow{color:#f3cb8e;text-transform:uppercase;letter-spacing:.12em;font-size:.84rem;font-weight:700}
+.lead,.note{color:#b9cee1}.note{font-size:.88rem}
+.panel{background:#12243e;border:1px solid #3e5e78;border-radius:16px;padding:22px;margin:20px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:16px}
+label{display:block;font-weight:700}
+label span{display:block;color:#b5cee0;font-size:.83rem;font-weight:400}
+input{width:100%;background:#081a2b;color:#fff;border:1px solid #87aec6;border-radius:9px;padding:12px;font:inherit;margin:7px 0}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.metric{background:#0b3249;padding:18px;border-radius:12px;border:1px solid #46758a}
+.metric strong{font-size:clamp(1.6rem,4vw,2.1rem);display:block;font-variant-numeric:tabular-nums}
+.metric span{font-size:.86rem;color:#b7d1e3}
+button{border:1px solid #82d6f2;background:#145777;color:white;padding:12px 18px;border-radius:10px;cursor:pointer;font:inherit;font-weight:700}
+button:hover{background:#1b6d8e}.actions{display:flex;gap:12px;flex-wrap:wrap}
+table{border-collapse:collapse;width:100%;text-align:center}th,td{border:1px solid #52718b;padding:10px}
+th{background:#1b3d56}td{font-variant-numeric:tabular-nums}
+#message{min-height:24px;color:#f5d9a5}footer{border-top:1px solid #46617b;padding-top:20px;margin-top:35px}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="../../track/foundations/index.html">Foundations track</a> · <a href="../../learn/evaluation-101/index.html">Evaluation 101 lesson</a> · <a href="../../index.html">Academy home</a></nav>
+<p class="eyebrow">NeVeRhOOd Academy · Interactive engineering lab</p>
+<h1>Model Evaluation Lab</h1>
+<p class="lead">Explore binary classification metrics using a confusion matrix. Change the four counts, inspect the tradeoffs, and export a reproducible practice receipt. All calculations run locally in your browser.</p>
+<section class="panel" aria-labelledby="counts-heading">
+<h2 id="counts-heading">1. Set observed outcomes</h2>
+<div class="grid">
+<label for="tp">True positives (TP)<span>Predicted positive, actually positive</span><input id="tp" type="number" min="0" max="1000000" step="1" value="70" inputmode="numeric"></label>
+<label for="fp">False positives (FP)<span>Predicted positive, actually negative</span><input id="fp" type="number" min="0" max="1000000" step="1" value="10" inputmode="numeric"></label>
+<label for="fn">False negatives (FN)<span>Predicted negative, actually positive</span><input id="fn" type="number" min="0" max="1000000" step="1" value="20" inputmode="numeric"></label>
+<label for="tn">True negatives (TN)<span>Predicted negative, actually negative</span><input id="tn" type="number" min="0" max="1000000" step="1" value="100" inputmode="numeric"></label>
+</div>
+<p id="message" role="status" aria-live="polite"></p>
+<div class="actions"><button type="button" id="reset">Restore example</button><button type="button" id="export">Export practice receipt (.json)</button></div>
+</section>
+<section class="panel" aria-labelledby="matrix-heading">
+<h2 id="matrix-heading">2. Confusion matrix</h2>
+<table aria-label="Binary classification confusion matrix"><thead><tr><th scope="col">Prediction</th><th scope="col">Actually positive</th><th scope="col">Actually negative</th></tr></thead>
+<tbody><tr><th scope="row">Predicted positive</th><td id="matrix-tp">70</td><td id="matrix-fp">10</td></tr>
+<tr><th scope="row">Predicted negative</th><td id="matrix-fn">20</td><td id="matrix-tn">100</td></tr></tbody></table>
+</section>
+<section class="panel" aria-labelledby="metrics-heading">
+<h2 id="metrics-heading">3. Computed metrics</h2>
+<div class="metrics">
+<div class="metric"><span>Precision · TP/(TP+FP)</span><strong id="precision">87.5%</strong></div>
+<div class="metric"><span>Recall · TP/(TP+FN)</span><strong id="recall">77.8%</strong></div>
+<div class="metric"><span>Specificity · TN/(TN+FP)</span><strong id="specificity">90.9%</strong></div>
+<div class="metric"><span>F1 · 2TP/(2TP+FP+FN)</span><strong id="f1">82.4%</strong></div>
+<div class="metric"><span>Accuracy · (TP+TN)/N</span><strong id="accuracy">85.0%</strong></div>
+<div class="metric"><span>Support · TP+FN</span><strong id="support">90</strong></div>
+</div>
+<p class="note">Undefined ratios display N/A rather than inventing a score. Accuracy can conceal class imbalance; compare class support, precision, recall and real held-out data. This lab does not train or evaluate an actual model.</p>
+</section>
+<footer class="note">Original independent learning exercise. No account, upload, tracking, external API, certification or university credit. Exported receipts describe your input counts only—not a model benchmark or accredited result.</footer>
+</main>
+<script>
+(()=>{'use strict';
+const keys=['tp','fp','fn','tn'],defaultCounts={tp:70,fp:10,fn:20,tn:100};
+const $=id=>document.getElementById(id);
+let last=null;
+const percentage=(n,d)=>d===0?'N/A':(100*n/d).toFixed(1)+'%';
+function update(){
+ const c={};
+ for(const key of keys){
+  const raw=$(key).value.trim(),n=Number(raw);
+  if(raw===''||!Number.isSafeInteger(n)||n<0||n>1000000){
+   $('message').textContent='Enter a whole number from 0 to 1,000,000 for each count.';
+   $('export').disabled=true;last=null;return;
+  }
+  c[key]=n;
+ }
+ $('message').textContent='';
+ $('export').disabled=false;
+ for(const key of keys)$('matrix-'+key).textContent=String(c[key]);
+ const n=c.tp+c.fp+c.fn+c.tn;
+ const m={
+  precision:percentage(c.tp,c.tp+c.fp),
+  recall:percentage(c.tp,c.tp+c.fn),
+  specificity:percentage(c.tn,c.tn+c.fp),
+  f1:percentage(2*c.tp,2*c.tp+c.fp+c.fn),
+  accuracy:percentage(c.tp+c.tn,n),
+  support:String(c.tp+c.fn)
+ };
+ for(const [key,value] of Object.entries(m))$(key).textContent=value;
+ last={schema_version:1,kind:'academy_practice_confusion_matrix',counts:c,total:n,metrics:m,
+  warning:'Practice-only input counts. Not an actual model benchmark or accredited assessment.'};
+}
+for(const key of keys)$(key).addEventListener('input',update);
+$('reset').addEventListener('click',()=>{for(const key of keys)$(key).value=String(defaultCounts[key]);update();});
+$('export').addEventListener('click',()=>{
+ if(!last)return;
+ const blob=new Blob([JSON.stringify(last,null,2)+'\n'],{type:'application/json'});
+ const url=URL.createObjectURL(blob),link=document.createElement('a');
+ link.href=url;link.download='academy-evaluation-practice.json';link.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+update();
+})();
+</script>
+</body>
+</html>
