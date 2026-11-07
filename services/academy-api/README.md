@@ -1,6 +1,6 @@
 # NeVeRhOOd Academy API (independent Go service)
 
-A stdlib-only, read-only HTTP API for the public Academy catalog and Manus frontend. It **does not** contain personal cloud credentials, private mailboxes, model weights or GPU controls.
+A stdlib-only HTTP API with a read-only public Academy catalog and a separate **disabled-by-default, authenticated** Captain tutor proxy. The tutor is not publicly hosted. It **does not** contain personal cloud credentials, private mailboxes, model weights or GPU controls.
 
 ## Build and run
 
@@ -24,7 +24,8 @@ For remote deployment bind to the host/port provided by an approved platform, e.
 | GET | /api/v1/courses | Filter by `query` or `q`, `category`, `verified_only`; `limit` 1..100 and `offset` |
 | GET | /api/v1/courses/{id} | Single course record |
 | GET | /api/v1/learning-paths | Original three-lesson Foundations track, with certificate status explicitly `not_issued` |
-| GET | /api/v1/models | Captain remains `not_deployed` until real inference is verified |
+| GET | /api/v1/models | Public availability remains `not_deployed` until a stable, externally verified Captain endpoint exists |
+| POST | /api/v1/tutor/chat | **Private, opt-in** authenticated tutor gateway; requires real upstream model, no fake fallback |
 
 Use `ACADEMY_ALLOWED_ORIGIN=https://your-manus-domain` to allow the frontend's browser origin. The default is **no cross-origin access**. Expose no private admin or job endpoints until authentication and authorization exist.
 
@@ -32,6 +33,16 @@ This service reads the currently reviewed public pilot CSV; it does **not** serv
 
 ## Future integration
 
-The Manus client can first use static `site/courses.json`, then move to this API when hosted. Tutor/chat will be a separate authenticated, rate-limited Captain service, not a fake chatbot in this API.
+The Manus client can first use static `site/courses.json`, then move to this API when hosted. Tutor/chat now has a deliberately private gateway in `tutor.go` and `tutor_test.go`. It is **disabled unless all three server environment variables are supplied**:
+
+```sh
+CAPTAIN_UPSTREAM_URL=https://your-authenticated-captain-origin
+CAPTAIN_SERVER_API_KEY=<backend-bearer-token>
+ACADEMY_TUTOR_ACCESS_KEY=<separate-academy-client-bearer-token>
+```
+
+For a local isolated demonstration the origin may instead be `http://127.0.0.1:<port>`; other unencrypted HTTP origins are refused. The route accepts `POST /api/v1/tutor/chat` with `Authorization: Bearer <academy-client-token>` and JSON `{ "question": "Explain APIs" }`. It forwards a **bounded** request to the authenticated Captain `/v1/chat/completions`, applies a 25-second deadline, validates the result, and returns an answer or an explicit 502/503—not a canned reply. It never places the upstream Captain secret in the browser.
+
+**Do not put the Academy client token in static JavaScript.** This endpoint remains an operator/private backend contract until Academy user login, per-session authorization, rate limiting, abuse controls, HTTPS termination and reliable Captain hosting are built. The existing `/api/v1/models` public status remains `not_deployed`. Integration testing against a real T4 model already passed on the native Captain side; that is not evidence of public availability.
 
 Run `go test ./...` and the repository's Python validator before deploying. The same dataset must be shipped together with the service binary.
