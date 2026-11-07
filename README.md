@@ -19,6 +19,10 @@ Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original p
 [Consolidated release tracker](docs/MASTER_RELEASE_TRACKER.md) — verified milestones for the school, Captain checkpoint, public runtime, HF chat demo and professional portfolio.\n\n## Start learning
 
 - [AI Agents 101 — Tools, Permissions & Evidence](site/learn/ai-agents-101/index.html): original five-section lesson with interactive five-question practice quiz; independent and non-accredited.
+- [AI Engineering Foundations](site/track/foundations/index.html): three original lessons, fifteen self-assessment questions.
+- [Protocols 101](site/learn/protocols-101/index.html): JSON, Protobuf and FlatBuffers.
+- [Model Evaluation 101](site/learn/evaluation-101/index.html): reproducibility, contamination, controls and release gates.
+- [Interactive Model Evaluation Lab](site/lab/evaluation/index.html): edit confusion-matrix counts, inspect precision/recall/F1/accuracy, export a local practice receipt.
 - [Academic credits and certificates policy](docs/ACADEMIC_CREDIT_AND_CERTIFICATES.md)
 - [Curriculum roadmap](docs/CURRICULUM_ROADMAP.md)
 
@@ -33,13 +37,15 @@ Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original p
 
 - [NeVeRhOOd portfolio page](site/about/index.html) — Academy, Captain AEGIS and DATA Studio
 - [Program boundaries](docs/PROGRAM_BOUNDARIES.md) — Muse's separate AEGIS model and private Colab work are strictly excluded
-- [Standalone Go Academy API](services/academy-api/README.md) — source available, hosting and Go tests pending
+- [Standalone Go Academy API](services/academy-api/README.md) — source available, public hosting pending; local Go tests passed
 - [Open release issues](https://github.com/tooljhlb/NeVeRhOOd-Academy/issues) — deployment, academic review, Captain integration and Manus
 
 ## Development
 
 ```sh
 python scripts/build.py
+python -m unittest discover -s tests -v
+node --test tests/evaluation_lab.test.cjs
 python -m http.server --directory site 8000
 ```
 
