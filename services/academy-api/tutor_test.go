@@ -40,7 +40,7 @@ func TestTutorToAuthenticatedCaptain(t *testing.T) {
   if r.Header.Get("Authorization")!="Bearer origin" {t.Errorf("wrong origin credentials")}
   var payload struct{Messages []struct{Content string};MaxTokens int}
   if err:=json.NewDecoder(r.Body).Decode(&payload);err!=nil {t.Error(err)}
-  if len(payload.Messages)!=2 || payload.Messages[1].Content!="Explain APIs" || payload.MaxTokens!=128 {t.Errorf("payload %+v",payload)}
+  if len(payload.Messages)!=2 || payload.Messages[1].Content!="Explain APIs" || payload.MaxTokens!=64 {t.Errorf("payload %+v",payload)}
   w.Header().Set("Content-Type","application/json")
   _,_=w.Write([]byte("{\"choices\":[{\"message\":{\"content\":\"An API defines an interface.\"}}]}"))
  }))
