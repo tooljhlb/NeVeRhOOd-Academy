@@ -95,7 +95,16 @@ func (s *Server) handler() http.Handler {
 				"chat_endpoint": nil, "note": "The real Captain backend requires GPU and full checkpoint validation."}},
 		})
 	})
-	mux.HandleFunc("/api/v1/courses", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/v1/learning-paths", func(w http.ResponseWriter, r *http.Request) {
+        jsonReply(w, http.StatusOK, map[string]any{"items": []any{
+            map[string]any{"id":"ai-engineering-foundations","title":"AI Engineering Foundations","accredited":false,"lessons":[]any{
+                map[string]string{"id":"ai-agents-101","title":"AI Agents 101","url_path":"/learn/ai-agents-101/index.html"},
+                map[string]string{"id":"protocols-101","title":"Protocols 101","url_path":"/learn/protocols-101/index.html"},
+                map[string]string{"id":"evaluation-101","title":"Model Evaluation 101","url_path":"/learn/evaluation-101/index.html"},
+            },"certificate_status":"not_issued","url_path":"/track/foundations/index.html"},
+        }})
+    })
+    mux.HandleFunc("/api/v1/courses", func(w http.ResponseWriter, r *http.Request) {
 		q := strings.ToLower(strings.TrimSpace(r.URL.Query().Get("query")))
 		if q == "" { q = strings.ToLower(strings.TrimSpace(r.URL.Query().Get("q"))) }
 		category := strings.ToLower(strings.TrimSpace(r.URL.Query().Get("category")))
