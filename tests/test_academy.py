@@ -63,6 +63,20 @@ class AcademyTests(unittest.TestCase):
             self.assertIn("not an accredited credential", page.lower(), slug)
             self.assertIn('type="submit"', page, slug)
 
+    def test_interactive_evaluation_lab_is_local_and_linked(self):
+        lab = (ROOT / "site" / "lab" / "evaluation" / "index.html").read_text(encoding="utf-8")
+        track = (ROOT / "site" / "track" / "foundations" / "index.html").read_text(encoding="utf-8")
+        lesson = (ROOT / "site" / "learn" / "evaluation-101" / "index.html").read_text(encoding="utf-8")
+        for metric in ("precision", "recall", "specificity", "f1", "accuracy"):
+            self.assertIn('id="' + metric + '"', lab)
+        self.assertIn("Number.isSafeInteger", lab)
+        self.assertIn("schema_version:1", lab)
+        self.assertIn("URL.createObjectURL", lab)
+        self.assertIn('href="../../lab/evaluation/index.html"', track)
+        self.assertIn('href="../../lab/evaluation/index.html"', lesson)
+        self.assertNotIn("fetch(", lab)
+        self.assertNotIn("localStorage", lab)
+
     def test_homepage_template_features_foundations_track(self):
         page = (ROOT / "site" / "template.html").read_text(encoding="utf-8")
         self.assertIn('href="track/foundations/index.html"', page)
