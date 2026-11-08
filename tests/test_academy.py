@@ -77,6 +77,18 @@ class AcademyTests(unittest.TestCase):
         self.assertNotIn("fetch(", lab)
         self.assertNotIn("localStorage", lab)
 
+    def test_public_control_center_does_not_fake_live_model(self):
+        page = (ROOT / "site" / "console" / "index.html").read_text(encoding="utf-8")
+        template = (ROOT / "site" / "template.html").read_text(encoding="utf-8")
+        self.assertIn('href="console/index.html"', template)
+        self.assertIn('Not publicly deployed', page)
+        self.assertIn('not a live monitoring dashboard', page)
+        self.assertIn("credentials:'omit'", page)
+        self.assertIn("fetch('/api/v1/health'", page)
+        self.assertIn("data.service!=='neverhood-academy-api'", page)
+        self.assertNotIn("CAPTAIN_SERVER_API_KEY", page)
+        self.assertNotIn("ACADEMY_TUTOR_ACCESS_KEY", page)
+
     def test_homepage_template_features_foundations_track(self):
         page = (ROOT / "site" / "template.html").read_text(encoding="utf-8")
         self.assertIn('href="track/foundations/index.html"', page)
