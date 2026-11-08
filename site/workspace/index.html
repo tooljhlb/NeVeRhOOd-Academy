@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090e18"><meta name="description" content="NeVeRHooD Academy study workspace — chat-first UI, projects, lessons, provider connections.">
+<title>Workspace · NeVeRHooD Academy</title>
+<style>
+:root{color-scheme:dark;--bg:#080e18;--panel:#101a29;--raise:#17253a;--line:#2b3d54;--muted:#a2b5ce;--fg:#f3f8ff;--blue:#87d7ff;--gold:#e5c079;--good:#86d9b5}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}button,textarea,input{font:inherit}
+button{color:var(--fg);cursor:pointer}a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.app{min-height:100vh;display:grid;grid-template-columns:260px minmax(0,1fr);grid-template-rows:64px 1fr}
+header{grid-column:1/-1;border-bottom:1px solid var(--line);background:#0c1523;display:flex;align-items:center;gap:12px;padding:0 18px;position:sticky;top:0;z-index:4}
+.iconbtn{background:transparent;border:1px solid transparent;border-radius:10px;padding:9px 12px}.iconbtn:hover{background:var(--raise);border-color:var(--line)}
+.brand{font-weight:820;letter-spacing:.02em}.brand b{color:var(--blue)}.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}.status{font-size:.78rem;color:#d5c0a4;background:#27241d;border:1px solid #736044;border-radius:100px;padding:4px 11px}
+.sidebar{background:#0d1726;border-right:1px solid var(--line);padding:17px;overflow:auto;display:flex;flex-direction:column;gap:15px}
+.navblock{display:flex;flex-direction:column;gap:5px}.navlabel{font-size:.72rem;letter-spacing:.1em;font-weight:760;color:var(--muted);text-transform:uppercase;margin:9px 0}
+.navlink{color:var(--fg);text-decoration:none;padding:10px 12px;border-radius:9px;display:block;border:1px solid transparent}
+.navlink:hover,.navlink.active{background:var(--raise);border-color:var(--line)}.side-foot{margin-top:auto;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);padding-top:13px}
+main{min-width:0;padding:24px;overflow:auto}.mainwrap{max-width:1180px;margin:0 auto}
+h1{font-size:clamp(1.7rem,3.3vw,2.5rem);line-height:1.15;margin:3px 0 9px}.sub{color:var(--muted)}.eyebrow{font-size:.73rem;text-transform:uppercase;letter-spacing:.13em;color:var(--gold)}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:22px 0}.tab{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 15px}.tab[aria-selected=true]{background:#164360;border-color:#79cde9}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,.8fr);gap:17px}.card{border:1px solid var(--line);background:var(--panel);border-radius:16px;min-width:0}
+.cardhead{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--line);padding:15px 19px}.cardhead h2{font-size:1rem;margin:0}.tiny{font-size:.78rem;color:var(--muted)}
+.chat-content{min-height:300px;padding:23px;display:flex;flex-direction:column;gap:15px}
+.bubble{max-width:95%;background:#1a2a40;border:1px solid #334b66;border-radius:13px;padding:14px 17px}.bubble p{color:#c7d9e9;margin:8px 0 0}
+.draft{padding:15px;border-top:1px solid var(--line)}label{display:block;color:#c8dced;margin-bottom:8px;font-size:.89rem}textarea{width:100%;min-height:93px;max-height:200px;resize:vertical;border:1px solid #526b82;background:#0c1728;color:var(--fg);border-radius:11px;padding:12px}
+.sendrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}.button{display:inline-block;border:1px solid #79cde8;background:#13536e;color:#fff;border-radius:10px;padding:10px 16px;text-decoration:none;font-weight:720}
+button:disabled{opacity:.48;cursor:not-allowed}.notice{color:#e4d2ad;font-size:.81rem}.browserbody{padding:14px}
+.browserlinks{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.browserlinks button{border:1px solid #48657e;background:#132d46;padding:8px 10px;border-radius:9px;font-size:.85rem}
+.browserframe{width:100%;height:405px;border:1px solid #36516b;border-radius:10px;background:#fff}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+.stat{padding:18px}.stat strong{font-size:1.5rem;display:block;margin:5px 0}.stat small{color:var(--muted)}
+#overlay{display:none}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+footer{max-width:1180px;margin:35px auto;color:var(--muted);font-size:.79rem;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:1000px){.workspace{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:670px){.app{grid-template-columns:minmax(0,1fr);grid-template-rows:60px 1fr}header{grid-column:1}main{grid-row:2;padding:17px}.sidebar{display:none;position:fixed;top:60px;bottom:0;left:0;width:min(82vw,310px);z-index:6;box-shadow:0 10px 40px #000a}.sidebar.open{display:flex}#overlay.open{display:block;position:fixed;inset:60px 0 0;z-index:5;border:0;background:#0009;width:100%}.cards{grid-template-columns:1fr}.header-right .status{display:none}}
+</style></head>
+<body>
+<div class="app">
+<header><button class="iconbtn" type="button" id="menu" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">☰</button><div class="brand">NeVeRHooD <b>ACADEMY</b></div><div class="header-right"><span class="status">Product preview · AI offline</span><a href="../membership/index.html">Plans</a></div></header>
+<aside class="sidebar" id="nav" aria-label="Sidebar navigation">
+<div class="navblock"><div class="navlabel">Academy</div><a class="navlink active" aria-current="page" href="index.html">◈ Main workspace</a><a class="navlink" href="../index.html">▦ Course directory</a><a class="navlink" href="../track/foundations/index.html">▤ Foundations lessons</a><a class="navlink" href="../lab/evaluation/index.html">◉ Model evaluation lab</a><a class="navlink" href="../console/index.html">⌘ Control center</a></div>
+<div class="navblock"><div class="navlabel">Projects & models</div><a class="navlink" href="../captain/index.html">◇ Aegis architecture explorer</a><a class="navlink" href="https://huggingface.co/Henrybarton/captainaegis-flagship" rel="noopener noreferrer" target="_blank">↗ Aegis on Hugging Face</a><a class="navlink" href="../about/index.html">▣ Aegis Data Frameworks</a></div>
+<div class="navblock"><div class="navlabel">Account</div><a class="navlink" href="../membership/index.html">Academy Plus · proposed $10</a><span class="tiny">Google sign-in and paid sessions are not active yet.</span></div>
+<div class="side-foot">Navigation and lesson preview work without an account. No credentials are collected.</div>
+</aside>
+<button type="button" id="overlay" aria-label="Close navigation"></button>
+<main><div class="mainwrap">
+<div class="eyebrow">Learning cockpit · Manus-ready static frontend</div><h1>Your AI engineering workspace</h1>
+<p class="sub">A chat-first workspace with projects, lessons and model references. This is a functional interface prototype; AI messages require a securely connected backend before they can be sent.</p>
+<div class="toolbar" role="tablist" aria-label="Workspace tabs"><button type="button" class="tab" id="tab-study" aria-selected="true" aria-controls="panel-study" role="tab">Study</button><button type="button" class="tab" id="tab-projects" aria-selected="false" aria-controls="panel-projects" role="tab">Projects</button><button type="button" class="tab" id="tab-models" aria-selected="false" aria-controls="panel-models" role="tab">Models</button></div>
+<div id="panel-study" role="tabpanel" aria-labelledby="tab-study">
+<div class="workspace">
+<section class="card" aria-labelledby="chat-heading">
+<div class="cardhead"><h2 id="chat-heading">Academy tutor · Main chat</h2><span class="status">Not connected</span></div>
+<div class="chat-content" id="transcript" role="log" aria-live="polite"><div class="bubble"><strong>AI tutor setup</strong><p>When an authorized Manus/platform AI integration is configured, this workspace can send authenticated, metered learning requests. No fabricated assistant responses are shown now.</p></div></div>
+<div class="draft"><label for="question">Prepare a study question</label><textarea id="question" maxlength="4000" placeholder="Example: Explain precision and recall with an example."></textarea><div class="sendrow"><span class="notice" id="chat-status" role="status">AI transport not configured · questions remain in this tab</span><button class="button" id="send" type="button" disabled aria-describedby="chat-status">Connect AI to send</button></div></div>
+</section>
+<section class="card" aria-labelledby="browser-heading"><div class="cardhead"><h2 id="browser-heading">Built-in lesson browser</h2><span class="tiny">Academy pages only</span></div><div class="browserbody">
+<div class="browserlinks"><button type="button" data-lesson="foundations">Foundations</button><button type="button" data-lesson="agents">AI Agents</button><button type="button" data-lesson="evaluation">Evaluation</button></div>
+<iframe class="browserframe" title="Academy lesson preview" id="lesson-frame" src="../track/foundations/index.html" sandbox="allow-scripts" loading="lazy" referrerpolicy="no-referrer"></iframe>
+<p class="tiny">For safety, the embedded viewer loads only bundled Academy lessons. External provider sites open in a new tab through their official links.</p>
+<a href="../index.html">Open course directory</a></div></section>
+</div></div>
+<div id="panel-projects" role="tabpanel" aria-labelledby="tab-projects" hidden><div class="cards"><article class="card stat"><strong>Foundations</strong><small>Three original lessons · locally available</small><p><a href="../track/foundations/index.html">Open curriculum</a></p></article><article class="card stat"><strong>Evaluation Lab</strong><small>In-browser practice · local receipts</small><p><a href="../lab/evaluation/index.html">Open evaluation</a></p></article><article class="card stat"><strong>Project storage</strong><small>Account-bound projects pending Google authentication and database integration</small></article></div></div>
+<div id="panel-models" role="tabpanel" aria-labelledby="tab-models" hidden><div class="cards"><article class="card stat"><strong>Managed AI</strong><small>Provider integration pending Manus account configuration and usage-budget enforcement</small></article><article class="card stat"><strong>Aegis model</strong><small>Independent Hugging Face showcase · no 24/7 GPU guaranteed</small><p><a href="https://huggingface.co/Henrybarton/captainaegis-flagship" rel="noopener noreferrer" target="_blank">Open model card</a></p></article><article class="card stat"><strong>Compute access</strong><small>Google sign-in does not grant Colab compute; separate consent and eligible compute are required</small></article></div></div>
+<footer>NeVeRHooD Academy · Non-accredited learning. The $10 membership, external AI, user accounts and continuous Aegis GPU hosting are not yet live. No personal tokens, API keys or chat transcripts are sent by this page.</footer>
+</div></main></div>
+<script>(()=>{'use strict';
+const nav=document.getElementById('nav'),menu=document.getElementById('menu'),overlay=document.getElementById('overlay');
+function closeNav(){nav.classList.remove('open');overlay.classList.remove('open');menu.setAttribute('aria-expanded','false')}
+menu.addEventListener('click',()=>{const next=!nav.classList.contains('open');nav.classList.toggle('open',next);overlay.classList.toggle('open',next);menu.setAttribute('aria-expanded',String(next))});
+overlay.addEventListener('click',closeNav);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNav()});
+const tabs=['study','projects','models'];function showTab(tab){if(!tabs.includes(tab))return;for(const t of tabs){const chosen=t===tab;document.getElementById('tab-'+t).setAttribute('aria-selected',String(chosen));document.getElementById('panel-'+t).hidden=!chosen}}
+for(const t of tabs)document.getElementById('tab-'+t).addEventListener('click',()=>showTab(t));
+const lessons=Object.freeze({foundations:'../track/foundations/index.html',agents:'../learn/ai-agents-101/index.html',evaluation:'../learn/evaluation-101/index.html'});
+for(const b of document.querySelectorAll('[data-lesson]'))b.addEventListener('click',()=>{const path=lessons[b.dataset.lesson];if(path)document.getElementById('lesson-frame').setAttribute('src',path)});
+})();</script></body></html>
