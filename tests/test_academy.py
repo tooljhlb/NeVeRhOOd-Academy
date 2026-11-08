@@ -77,6 +77,25 @@ class AcademyTests(unittest.TestCase):
         self.assertNotIn("fetch(", lab)
         self.assertNotIn("localStorage", lab)
 
+    def test_workspace_preview_is_safe_and_navigable(self):
+        workspace = (ROOT / "site" / "workspace" / "index.html").read_text(encoding="utf-8")
+        home = (ROOT / "site" / "template.html").read_text(encoding="utf-8")
+        console = (ROOT / "site" / "console" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('id="menu"', workspace)
+        self.assertIn('aria-expanded="false"', workspace)
+        self.assertIn('id="panel-study"', workspace)
+        self.assertIn('id="panel-projects"', workspace)
+        self.assertIn('id="panel-models"', workspace)
+        self.assertIn('sandbox="allow-scripts"', workspace)
+        self.assertIn('const lessons=Object.freeze', workspace)
+        self.assertIn('id="send" type="button" disabled', workspace)
+        self.assertIn('No fabricated assistant responses', workspace)
+        self.assertNotIn('localStorage', workspace)
+        self.assertNotIn('fetch(', workspace)
+        self.assertNotIn('token.json', workspace)
+        self.assertIn('href="workspace/index.html"', home)
+        self.assertIn('href="../workspace/index.html"', console)
+
     def test_subscription_page_is_prelaunch_and_non_transactional(self):
         page = (ROOT / "site" / "membership" / "index.html").read_text(encoding="utf-8")
         home = (ROOT / "site" / "template.html").read_text(encoding="utf-8")
