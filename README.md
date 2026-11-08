@@ -28,6 +28,7 @@ Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original p
 
 ## Explore
 
+- [Academy Plus membership preview](site/membership/index.html) — proposed $10/month, no live checkout or paid AI access yet.
 - [Academy Control Center](site/console/index.html) — responsive product dashboard with evidence-based status and safe optional API health check.
 - [Academy course directory](site/index.html) — searchable pilot catalogue.
 - [Captain AEGIS architectural explorer](site/captain/index.html) — twelve interactive operational and learning facets.
