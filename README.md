@@ -28,6 +28,7 @@ Created by NeVeRhOOd / Henry Barton. The Academy connects learners to original p
 
 ## Explore
 
+- [Manus-portable Academy study workspace](site/workspace/index.html) — mobile hamburger navigation, offline chat shell, project tabs and same-origin lesson browser; AI not connected yet.
 - [Academy Plus membership preview](site/membership/index.html) — proposed $10/month with usage-limited platform AI; no live checkout or paid AI access yet.
 - [Owner-approved product and revenue lanes](docs/ACADEMY_PRODUCT_AND_REVENUE_LANES_20261108.md) — Academy, Aegis Data Frameworks, Aegis model showcase and separate business services.
 - [Academy Control Center](site/console/index.html) — responsive product dashboard with evidence-based status and safe optional API health check.
