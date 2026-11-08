@@ -77,6 +77,19 @@ class AcademyTests(unittest.TestCase):
         self.assertNotIn("fetch(", lab)
         self.assertNotIn("localStorage", lab)
 
+    def test_subscription_page_is_prelaunch_and_non_transactional(self):
+        page = (ROOT / "site" / "membership" / "index.html").read_text(encoding="utf-8")
+        home = (ROOT / "site" / "template.html").read_text(encoding="utf-8")
+        console = (ROOT / "site" / "console" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('$10', page)
+        self.assertIn('not yet available to purchase', page)
+        self.assertIn('No payment information is collected', page)
+        self.assertIn('own provider accounts', page)
+        self.assertNotIn('checkout.stripe.com', page)
+        self.assertNotIn('<form', page)
+        self.assertIn('href="membership/index.html"', home)
+        self.assertIn('href="../membership/index.html"', console)
+
     def test_public_control_center_does_not_fake_live_model(self):
         page = (ROOT / "site" / "console" / "index.html").read_text(encoding="utf-8")
         template = (ROOT / "site" / "template.html").read_text(encoding="utf-8")
