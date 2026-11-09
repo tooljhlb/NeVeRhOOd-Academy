@@ -30,6 +30,7 @@ type Course struct {
 }
 
 type Server struct {
+	Firebase *FirebaseJWTVerifier
 	Courses []Course
 	Origin  string
 	CaptainProbeURL string
@@ -86,6 +87,16 @@ func jsonReply(w http.ResponseWriter, status int, data any) {
 func (s *Server) handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle("/api/v1/tutor/chat", s.Tutor)
+    mux.HandleFunc("/api/v1/session",func(w http.ResponseWriter,r *http.Request){
+      if r.Method!=http.MethodGet {tutorResponse(w,405,map[string]string{"error":"GET only"});return}
+      id,err:=s.Firebase.Verify(r.Context(),r.Header.Get("Authorization"))
+      if err!=nil {
+        if errors.Is(err,ErrAuthUnavailable){tutorResponse(w,503,map[string]string{"error":"Authentication not configured or temporarily unavailable"});return}
+        tutorResponse(w,401,map[string]string{"error":"Unauthorized"});return
+      }
+      tutorResponse(w,200,map[string]any{"uid":id.UID,"email":id.Email,"email_verified":id.EmailVerified,"plan":"free","subscription_status":"not_configured"})
+    })
+
 	mux.HandleFunc("/api/v1/health", func(w http.ResponseWriter, r *http.Request) {
 		jsonReply(w, http.StatusOK, map[string]any{
 			"status": "ok", "service": "neverhood-academy-api",
@@ -176,7 +187,12 @@ func main() {
 	courses, err := loadCSV(*catalog)
 	if err != nil { log.Fatal(err) }
 	origin := strings.TrimSpace(os.Getenv("ACADEMY_ALLOWED_ORIGIN"))
-	s := &Server{Courses: courses, Origin: origin, CaptainProbeURL: strings.TrimSpace(os.Getenv("CAPTAIN_READY_URL")), Tutor: TutorGateway{UpstreamURL: strings.TrimSpace(os.Getenv("CAPTAIN_UPSTREAM_URL")), UpstreamKey: os.Getenv("CAPTAIN_SERVER_API_KEY"), AcademyKey: os.Getenv("ACADEMY_TUTOR_ACCESS_KEY")}}
+	var firebaseVerifier *FirebaseJWTVerifier
+    if project:=strings.TrimSpace(os.Getenv("ACADEMY_FIREBASE_PROJECT_ID"));project!="" {
+      cache:=NewGoogleFirebaseCertCache()
+      firebaseVerifier=&FirebaseJWTVerifier{ProjectID:project,Keys:cache.Keys}
+    }
+    s := &Server{Firebase:firebaseVerifier,Courses: courses, Origin: origin, CaptainProbeURL: strings.TrimSpace(os.Getenv("CAPTAIN_READY_URL")), Tutor: TutorGateway{UpstreamURL: strings.TrimSpace(os.Getenv("CAPTAIN_UPSTREAM_URL")), UpstreamKey: os.Getenv("CAPTAIN_SERVER_API_KEY"), AcademyKey: os.Getenv("ACADEMY_TUTOR_ACCESS_KEY")}}
 	server := &http.Server{
 		Addr: *addr, Handler: s.handler(), ReadHeaderTimeout: 5*time.Second,
 		ReadTimeout: 15*time.Second, WriteTimeout: 30*time.Second, IdleTimeout: 60*time.Second,
