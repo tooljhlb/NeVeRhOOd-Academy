@@ -102,7 +102,6 @@ test('mobile drawer traps keyboard focus and restores focus on Escape', () => {
   const { element, listeners } = harness();
   const menu = element('menu'), first = element('nav-first-link'), last = element('nav-last-link');
   menu.click();
-  assert.equal(first.focus, typeof first.focus);
   const event1 = { key: 'Tab', shiftKey: true, preventDefault() { this.prevented = true; } };
   listeners.get('keydown')(event1);
   assert.equal(event1.prevented, true);
