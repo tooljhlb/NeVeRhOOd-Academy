@@ -21,6 +21,7 @@ For remote deployment bind to the host/port provided by an approved platform, e.
 | HTTP | Route | Behavior |
 |---|---|---|
 | GET | /api/v1/health | Public service health and count |
+| GET | /api/v1/session | Authenticated Firebase ID token inspection; 401 invalid, 503 if unconfigured; returns free/not_configured until paid entitlements exist |
 | GET | /api/v1/courses | Filter by `query` or `q`, `category`, `verified_only`; `limit` 1..100 and `offset` |
 | GET | /api/v1/courses/{id} | Single course record |
 | GET | /api/v1/learning-paths | Original three-lesson Foundations track, with certificate status explicitly `not_issued` |
@@ -30,6 +31,13 @@ For remote deployment bind to the host/port provided by an approved platform, e.
 Use `ACADEMY_ALLOWED_ORIGIN=https://your-manus-domain` to allow the frontend's browser origin. The default is **no cross-origin access**. Expose no private admin or job endpoints until authentication and authorization exist.
 
 This service reads the currently reviewed public pilot CSV; it does **not** serve the owner's 1,000-entry unverified private research archive. The Academy cannot issue accredited degree credits.
+
+## Firebase ID-token verification (implemented, opt-in)
+Set `ACADEMY_FIREBASE_PROJECT_ID=<actual-firebase-project-id>` on the protected server **after** configuring a real Firebase Google sign-in provider and authorized domain. The Go backend verifies signed RS256 Firebase ID tokens and checks their project issuer/audience, issue/auth timestamps, expiry, signature and subject UID against Google public certificates. Never accept an email address or a client-provided subscription role as authentication. The session endpoint returns only a FREE, not-configured membership while Stripe and database entitlements are still unimplemented.
+
+`GET /api/v1/session` requires `Authorization: Bearer <Firebase ID token>` and returns `Cache-Control: no-store`. Without the server configuration it fails closed with 503. This is a **real JWT validation module with local signed-token tests**, not evidence of live Google account integration or persisted learner records.
+
+Build gate: `go test -race -count=1 ./...`, `go vet ./...`, `go build .`. Verified 2026-11-08 against the complete Go package (22 top-level tests).
 
 ## Future integration
 
