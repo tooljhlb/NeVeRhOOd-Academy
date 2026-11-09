@@ -65,12 +65,22 @@ footer{max-width:1180px;margin:35px auto;color:var(--muted);font-size:.79rem;bor
 </div></main></div>
 <script>(()=>{'use strict';
 const nav=document.getElementById('nav'),menu=document.getElementById('menu'),overlay=document.getElementById('overlay');
-function closeNav(){nav.classList.remove('open');overlay.classList.remove('open');menu.setAttribute('aria-expanded','false')}
-menu.addEventListener('click',()=>{const next=!nav.classList.contains('open');nav.classList.toggle('open',next);overlay.classList.toggle('open',next);menu.setAttribute('aria-expanded',String(next))});
-overlay.addEventListener('click',closeNav);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNav()});
-const tabs=['study','projects','models'];function showTab(tab){if(!tabs.includes(tab))return;for(const t of tabs){const chosen=t===tab;document.getElementById('tab-'+t).setAttribute('aria-selected',String(chosen));document.getElementById('panel-'+t).hidden=!chosen}}
-for(const t of tabs)document.getElementById('tab-'+t).addEventListener('click',()=>showTab(t));
+function closeNav(restoreFocus=false){const wasOpen=nav.classList.contains('open');nav.classList.remove('open');overlay.classList.remove('open');menu.setAttribute('aria-expanded','false');if(wasOpen&&restoreFocus)menu.focus()}
+function setNav(open){nav.classList.toggle('open',open);overlay.classList.toggle('open',open);menu.setAttribute('aria-expanded',String(open));if(open){const links=nav.querySelectorAll('a[href]');if(links.length)links[0].focus()}}
+menu.addEventListener('click',()=>setNav(!nav.classList.contains('open')));
+overlay.addEventListener('click',()=>closeNav(true));
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeNav(true);return}
+  if(e.key!=='Tab'||!nav.classList.contains('open'))return;
+  const focusables=Array.from(nav.querySelectorAll('a[href],button:not([disabled])'));if(!focusables.length)return;
+  const first=focusables[0],last=focusables[focusables.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+});
+const tabs=['study','projects','models'];
+function showTab(tab,focus=false){if(!tabs.includes(tab))return;for(const t of tabs){const chosen=t===tab,node=document.getElementById('tab-'+t);node.setAttribute('aria-selected',String(chosen));node.setAttribute('tabindex',chosen?'0':'-1');document.getElementById('panel-'+t).hidden=!chosen}if(focus)document.getElementById('tab-'+tab).focus()}
+for(const t of tabs){const node=document.getElementById('tab-'+t);node.addEventListener('click',()=>showTab(t));node.addEventListener('keydown',e=>{if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;e.preventDefault();const i=tabs.indexOf(t);const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:e.key==='ArrowRight'?(i+1)%tabs.length:(i+tabs.length-1)%tabs.length;showTab(tabs[next],true)})}
+showTab('study');
 const lessons=Object.freeze({foundations:'../track/foundations/index.html',agents:'../learn/ai-agents-101/index.html',evaluation:'../learn/evaluation-101/index.html'});
 for(const b of document.querySelectorAll('[data-lesson]'))b.addEventListener('click',()=>{const path=lessons[b.dataset.lesson];if(path)document.getElementById('lesson-frame').setAttribute('src',path)});
 })();</script></body></html>
