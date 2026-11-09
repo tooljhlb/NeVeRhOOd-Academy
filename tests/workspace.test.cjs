@@ -11,6 +11,7 @@ if (!script) throw new Error('workspace script missing');
 function harness() {
   const nodes = new Map();
   const listeners = new Map();
+  let activeElement = null;
   function element(id) {
     if (!nodes.has(id)) {
       const attributes = new Map();
@@ -18,6 +19,13 @@ function harness() {
       const classes = new Set();
       nodes.set(id, {
         id, dataset: {}, hidden: false,
+        focus() { activeElement = this; },
+        querySelectorAll(selector) {
+          assert.ok(selector === 'a[href]' || selector === 'a[href],button:not([disabled])');
+          return [element('nav-first-link'), element('nav-last-link')];
+        },
+        fire(name, event) { const callback = handlers.get(name); if (callback) callback(event); },
+
         getAttribute(name) { return attributes.get(name) ?? null; },
         setAttribute(name, value) { attributes.set(name, String(value)); },
         addEventListener(name, callback) { handlers.set(name, callback); },
@@ -42,6 +50,7 @@ function harness() {
   });
   const document = {
     getElementById: element,
+    get activeElement() { return activeElement; },
     querySelectorAll(selector) {
       assert.equal(selector, '[data-lesson]');
       return lessonButtons;
@@ -87,6 +96,35 @@ test('Study, Projects and Models switch correct tab panels', () => {
   assert.equal(element('panel-projects').hidden, true);
   element('tab-study').click();
   assert.equal(element('panel-study').hidden, false);
+});
+
+test('mobile drawer traps keyboard focus and restores focus on Escape', () => {
+  const { element, listeners } = harness();
+  const menu = element('menu'), first = element('nav-first-link'), last = element('nav-last-link');
+  menu.click();
+  assert.equal(first.focus, typeof first.focus);
+  const event1 = { key: 'Tab', shiftKey: true, preventDefault() { this.prevented = true; } };
+  listeners.get('keydown')(event1);
+  assert.equal(event1.prevented, true);
+  const event2 = { key: 'Tab', shiftKey: false, preventDefault() { this.prevented = true; } };
+  listeners.get('keydown')(event2);
+  assert.equal(event2.prevented, true);
+  listeners.get('keydown')({ key: 'Escape' });
+  assert.equal(menu.getAttribute('aria-expanded'), 'false');
+});
+
+test('keyboard arrow and Home/End select correct tabs', () => {
+  const { element } = harness();
+  const evt = key => ({ key, preventDefault() { this.prevented = true; } });
+  const study = element('tab-study'), projects = element('tab-projects'), models = element('tab-models');
+  study.fire('keydown', evt('ArrowRight'));
+  assert.equal(projects.getAttribute('aria-selected'), 'true');
+  projects.fire('keydown', evt('ArrowRight'));
+  assert.equal(models.getAttribute('aria-selected'), 'true');
+  models.fire('keydown', evt('Home'));
+  assert.equal(study.getAttribute('aria-selected'), 'true');
+  study.fire('keydown', evt('End'));
+  assert.equal(models.getAttribute('aria-selected'), 'true');
 });
 
 test('embedded browser only selects hardcoded Academy lessons', () => {
